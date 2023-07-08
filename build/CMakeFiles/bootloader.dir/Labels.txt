@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/home/adam/workspace/mqtt-valve/build/CMakeFiles/bootloader
+/home/adam/workspace/mqtt-valve/build/CMakeFiles/bootloader.rule
+/home/adam/workspace/mqtt-valve/build/CMakeFiles/bootloader-complete.rule
+/home/adam/workspace/mqtt-valve/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/home/adam/workspace/mqtt-valve/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/home/adam/workspace/mqtt-valve/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/home/adam/workspace/mqtt-valve/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/home/adam/workspace/mqtt-valve/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/home/adam/workspace/mqtt-valve/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/home/adam/workspace/mqtt-valve/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
