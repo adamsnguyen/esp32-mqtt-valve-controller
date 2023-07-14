@@ -45,13 +45,14 @@ typedef struct {
     char name[10];
     bool status;
     int pin;
+    int timeout_ms;
     TimerHandle_t timer;
     TimerParams_t xTimerParameters;
 } Valve;
 
-Valve valves[] = {  {1, "valve_1", false, VALVE_1_GPIO_OUT_PIN, NULL, {1, VALVE_1_GPIO_OUT_PIN}},
-                    {2, "valve_2", false, VALVE_2_GPIO_OUT_PIN, NULL, {2, VALVE_2_GPIO_OUT_PIN}},
-                    {3, "valve_3", false, VALVE_3_GPIO_OUT_PIN, NULL, {3, VALVE_3_GPIO_OUT_PIN}}};
+Valve valves[] = {  {1, "valve_1", false, VALVE_1_GPIO_OUT_PIN, 1800000, NULL, {1, VALVE_1_GPIO_OUT_PIN}},
+                    {2, "valve_2", false, VALVE_2_GPIO_OUT_PIN, 1800000, NULL, {2, VALVE_2_GPIO_OUT_PIN}},
+                    {3, "valve_3", false, VALVE_3_GPIO_OUT_PIN, 1800000, NULL, {3, VALVE_3_GPIO_OUT_PIN}}};
 
 char valve1ChangeStatus[] = "/valve1/change_status";
 char valve2ChangeStatus[] = "/valve2/change_status";
@@ -60,6 +61,10 @@ char valve3ChangeStatus[] = "/valve3/change_status";
 char valve1GetStatus[] = "/valve1/get_status";
 char valve2GetStatus[] = "/valve2/get_status";
 char valve3GetStatus[] = "/valve3/get_status";
+
+char valve1SendStatus[] = "/valve1/send_status";
+char valve2SendStatus[] = "/valve2/send_status";
+char valve3SendStatus[] = "/valve3/send_status";
 
 static const char *TAG = "MQTT_EXAMPLE";
 
@@ -84,13 +89,29 @@ void start_timer(Valve* valve){
 
     if (valve->timer == NULL)
     {
-        valve->timer = xTimerCreate(valve->name, pdMS_TO_TICKS(10000), pdFALSE, (void*)&valve->xTimerParameters, on_timer);
+        valve->timer = xTimerCreate(valve->name, pdMS_TO_TICKS(valve->timeout_ms), pdFALSE, (void*)&valve->xTimerParameters, on_timer);
         printf("time start %lld\n", esp_timer_get_time() / 1000);
     }
     if (xTimerStart(valve->timer, 0) != pdPASS)
     {
         // The start command could not be sent to the timer service task successfully.
         ESP_LOGE(TAG, "Failed to start timer");
+    }
+}
+
+void stop_timer(Valve* valve){
+    printf("%s ON\n", valve->name);
+
+    gpio_set_level(valve->pin, 0);
+    valve->status = false;
+
+    if (valve->timer != NULL)
+    {
+        // Stops the timer
+        xTimerStop(valve->timer, 0);
+        // Cleans up the timer resources
+        xTimerDelete(valve->timer, 0);
+
     }
 }
 
@@ -296,13 +317,13 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
             switch (valve)
             {
             case 1:                
-                esp_mqtt_client_publish(client, valve1GetStatus, result, 0, 1, 0);
+                esp_mqtt_client_publish(client, valve1SendStatus, result, 0, 1, 0);
                 break;
             case 2:
-                esp_mqtt_client_publish(client, valve2GetStatus, result, 0, 1, 0);
+                esp_mqtt_client_publish(client, valve2SendStatus, result, 0, 1, 0);
                 break;
             case 3:
-                esp_mqtt_client_publish(client, valve3GetStatus, result, 0, 1, 0);
+                esp_mqtt_client_publish(client, valve3SendStatus, result, 0, 1, 0);
                 break;
             default:
                 break;

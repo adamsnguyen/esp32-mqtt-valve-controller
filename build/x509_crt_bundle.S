@@ -1,4 +1,4 @@
-/* * Data converted from /home/adam/workspace/mqtt-valve/build/esp-idf/mbedtls/x509_crt_bundle
+/* * Data converted from /home/adam/workspace/esp32-mqtt-valve-controller/build/esp-idf/mbedtls/x509_crt_bundle
  */
 .data
 .section .rodata.embedded

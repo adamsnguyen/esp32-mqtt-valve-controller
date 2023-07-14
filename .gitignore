@@ -1,0 +1,6 @@
+# VSCode
+.vscode/*
+
+# IDF
+build
+sdkconfig*

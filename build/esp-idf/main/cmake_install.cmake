@@ -1,4 +1,4 @@
-# Install script for directory: /home/adam/workspace/mqtt-valve/main
+# Install script for directory: /home/adam/workspace/esp32-mqtt-valve-controller/main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
